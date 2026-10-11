@@ -1,7 +1,15 @@
 package com.example.userservice.model;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.Table;
+
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 @Entity
 @Table(name = "users")
@@ -28,7 +36,6 @@ public class User {
         createdAt = LocalDateTime.now();
     }
 
-    // Конструкторы
     public User() {}
 
     public User(String name, String email, Integer age) {
@@ -37,7 +44,6 @@ public class User {
         this.age = age;
     }
 
-    // Геттеры и сеттеры
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
@@ -54,8 +60,14 @@ public class User {
     public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
 
     @Override
-    public String toString() {
-        return String.format("User{id=%d, name='%s', email='%s', age=%d, createdAt=%s}",
-                id, name, email, age, createdAt);
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof User user)) return false;
+        return id != null && id.equals(user.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }
